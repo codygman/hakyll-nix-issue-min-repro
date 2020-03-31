@@ -1,3 +1,36 @@
+# Try adding warp dependency manually with addBuildDepend (based on [help in irc](https://logs.nix.samueldr.com/nixos/2020-03-31#3249351;))
+
+### change
+
+```diff
+modified   generator/release.nix
+@@ -1,6 +1,5 @@
+ with import <nixpkgs> {};
+ let myHaskellPackages = pkgs.haskellPackages.override {
+           overrides = self: super: with pkgs.haskell.lib;
+-            { hakyll = appendConfigureFlag super.hakyll "-f previewServer";
+-            }; };
++            { hakyll = addBuildDepend (appendConfigureFlag super.hakyll "-f previewServer") [self.warp]; }; };
+     in myHaskellPackages.callPackage ./default.nix {}
+```
+
+### output (shell.nix just calls
+     [blogDefault.nix](https://github.com/codygman/hakyll-nix-issue-min-repro/blob/master/blogDefault.nix)
+     ) which imports [generator/release.nix](https://github.com/codygman/hakyll-nix-issue-min-repro/blob/master/generator/release.nix)
+
+```shell
+[cody@nixos:~/code/hakyll-nix-issue-min-repro]$ nix-shell
+these derivations will be built:
+  /nix/store/1hzq9iqhz8nrzwah5cr8d7snlr91i9vh-hakyll-4.13.2.0.drv
+  /nix/store/9lm131dysv70aj01v69jpf22v2kw9sq8-codygman-site-generator-1.drv
+...
+Setup: Encountered missing or private dependencies:
+warp ==3.2.*
+...
+
+```
+
+
 # Issue
 
 ```
