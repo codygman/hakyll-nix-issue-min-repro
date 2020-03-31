@@ -12,7 +12,6 @@ let
         isLibrary = false;
         isExecutable = true;
         enableSeparateDataOutput = true;
-        configureFlags = "-f watchServer -f previewServer";
         executableHaskellDepends = [ base hakyll unordered-containers pandoc ];
         license = stdenv.lib.licenses.mit;
       };

@@ -9,8 +9,6 @@ in stdenv.mkDerivation rec {
 	src = builtins.filterSource
 		(path: _: builtins.foldl' (acc: el: acc && builtins.baseNameOf path != el) true ignores)
 		./.;
-
-  configureFlags = "-f watchServer -f previewServer";
 	phases = "unpackPhase buildPhase";
 	buildInputs = [ generator glibcLocales ];
 	buildPhase = ''
